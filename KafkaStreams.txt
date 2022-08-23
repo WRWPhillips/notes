@@ -1,0 +1,83 @@
+Kafka Streams ---> What is it?
+
+Kafka streams is a lightweight but powerful Java library for enriching,
+transforming, and processing real-time streams of data. 
+
+The Kafka Ecosystem:
+
+	Kafka streams lives among a group of technologies that are
+	collectively reffered to as the Kafka ecosystem. The heart of Kafka
+	is a distributed append only log that we can produce messages to and
+	read messages from. There are many important APIs for interacting
+	with this log. Three APIs in the kafka ecosystem are converned with
+	the movement of data to and from Kafka. 
+
+	1. Producer API
+		Writes messages to topics (filebeat, rsyslog, custom)
+
+	2. Consumer API
+		Reads messages from topics (logstash, kafkacat, custom)
+
+	3. Connect API
+		Connects external data stores, APIs, and filesystems to Kafka
+		topics, involves both reading from topics (sink connectors)
+		and writing to topics (source connectors).
+		(JDBC source connector, ElasticSearch sink connector, custom)
+
+Enter Streams:
+	While moving data through kafka is certainly important for creating 
+	data pipelines, some business problems require us to also process
+	and react to data as it becomes available in kafka. This is referred
+	to as stream processing, and there are multiple ways of building
+	stream processing applications with kafka. In the past, these were 
+	built on top of the Consumer and Producer APIs with Python, Java, Go,
+	C, C++, Node.js, etc. and took a lot of code from scratch in order to
+	perform data processing logic. These APIs were very basic and lacked 
+	many of the primitives that would qualify them as a stream processing
+	api, including:
+		
+		-Local and fault-tolerant state 
+		-A rich set of operators for transforming data streams
+		-More advanced representations of streams
+		-Sophisticated handling of time
+
+	This meant anything nontrivial like aggregate records, joins between 
+	separate streams of data, event grouping into windowed time buckets,
+	and ad-hoc queries against streams became very complex very quickly. 
+	The producer and consumer APIs did not have any tooling to help with
+	these use cases, so things had to be self implemented.
+ 
+	In 2016 Kafka Streams, also known as the streams api, was introduced
+	as a solution to these problems. Unlike other APIs Streams is devoted
+	to processing real-time data streams, rather than just moving data. 
+	
+	Streams operates on another layer, a stream processing layer,
+	consuming records from the event stream, processing the data, and 
+	optionally writing enriched or transformed records back to Kafka.
+
+	Streams provides: 
+		- A high-level DSL (domain specific language) that looks and
+		feels like Java's streaming API. The DSL provides a fluent
+		and functional approach to processing data streams that is
+		easy to learn and use.
+
+		- A low-level processor API that gives fine-grained control 
+		when needed
+
+		- Convenient abstractions for modeling data as either streams
+		or tables
+
+		- The ability to join streams and tables
+
+		- Operators and utilities for building both stateless and 
+		stateful stream processing applications
+
+		- Support for time-based operations, including windowing and
+		periodic functions.
+
+		- Easy installation. It's a library that can be added to any 
+		Java application.
+
+		- Scalability, reliability, and maintainability.
+
+		
