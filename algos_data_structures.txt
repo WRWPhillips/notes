@@ -1,0 +1,104 @@
+# Data Structures
+# -- the way data is arranged in computer memory for fast and efficient access
+#
+# Algorithms
+# -- Algorithms are sets of instructions to solve problems by manipulating these data structures.
+# -- Designing efficient algorithms is a very important skill that all computer companies pursue. 
+# -- Most interviews are focused around understanding data structures and algorithms
+# -- They look for how candidates use these to solve problems efficiently
+# -- Essential for high paying jobs
+#
+# Algorithms Analysis
+#   an algorithm is a set of steps to accomplish a task or a computer frogram in which a set of steps
+#   is applied over a set of inputs to produce a set of outputs
+#
+#   Most important properties of an algorithm are:
+#     Correctness: the algorithm should be correct, able to process inputs and give correct output
+#
+#     Efficiency: the algorithm should be efficient in solving problems. Efficiency is measured in 2 params
+#       Time-Complexity (T(n)) -- How quickly result is produced by algorithm
+#       Space-Complexity (S(n)) -- How much RAM the algorithm is going to consume to produce desired result
+#
+#   Asymptotic Analysis- Asymptotic analysis is used to compare the efficiency of algorithms independent of 
+#     the particular set of data or programming language. Generally interested in the order of growth of some
+#     algorithm and not the exact time required to run it. This is called asymptotic-running time.
+#
+#   Big O notation -- Basically focus on whatever is going to exponentially scale the most, over a long enough
+#     scale simple multiplication won't matter so only the biggest factor needs to be denoted. The highest bound
+#     of growth-- worst case
+#
+#   Big Omega -- Omega is the lower bound on an algorithm, the lowest time required, in other words best case
+#     scenario.
+#
+#   Theta -- The best of all the worst case times, this is still confusing but hopefully won't be that important
+#
+#   Complexity Analysis of Algorithms 
+#     1. Worst Case Complexity (Big O) -
+#       The complexity of solving the problem for the worst input of size N. It provides the upper bound for the
+#       algorithm. Most common
+#     2. Average Case complexity (Theta??) -
+#       The complexity of solving the problem on average. We calculate the time for all possible inputs then take
+#       an average of it.
+#     3. Best Case Complexity (Big Omega) - Complexity of solving the problem for the best input of size N.
+#       
+#   Operation Time Complexity in increasing order!
+#     Constant Time: O(1) -- Accessing nth element of array, push and pop of stack, etc
+#     Linear Time: O(n) -- Directly proportional to input size -- search element, find min, find max, linked list
+#       equivalents.
+#     Logarithmic Time: O(logn) -- Execution proportional to logarithm of input size -- binary search
+#     N-LogN Time: O(nlogn(n)) -- Proportional to product of input size and logarithm of input size -- Merge-sort
+#       quick-sort heap-sort
+#     Quadratic Time: O(n^2) -- Proportional to square of input size -- bubble-sort, selection-sort, 
+#       insertion-sort
+#
+#   Deriving the Runtime Function of an Algorithm
+#     
+#     Constants: each takes a constant time to run O(1)
+#     Loops: product of running time of statement and number of iterations in the loop O(n)
+#     Nested Loop: Time complexity O(n^c) where c is the number of nested loops.
+#     Consecutive Statements: Just add the running times of all the consecutive statements
+#     If/Else statements: Consider running time of the larger if or else block. Moreover ignore the other one.
+#     Logarithmic Statements: With each iteration the input size is decreased by a constant factor. O(log(n))
+#
+#   Master Theorem
+#     The master theorem solves recurrence relations of the form: T(n) = a T(n / b) + f(n) -- used for recursive
+#       functions, don't worry too bad
+#
+# Array Questions -- 
+#   
+#   Sum Array - write a method that will return the sum of all the elements of the given array
+#
+#     def SumArray(arr)
+#       size = arr.Length
+#       total = 0
+#       index = 0
+#       while index < size 
+#         total = total + arr[index]
+#         index += 1
+#       end
+#       return total
+#     end 
+#
+#     alt: array.injext(0, :+) -- 0 base case needed otherwize nil will be returned on all arrays
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
