@@ -1,0 +1,21 @@
+Linux Distributions:
+
+There are a ton of distributions that are specialized for specific use cases. Scientific linux, kali linux, centos, all these are specialized for certain use cases. 
+
+Big families of distributions:
+	Debian: Ubuntu, Mint, and Kali Linux
+	RedHat: CentOS, Fedora
+	SUSE: OpenSUSE
+	ArchLinux: LinHES and Manjaro
+
+There are lightweight distros for embedded systems
+
+The world of cloud computing entirely relies on Linux. 
+
+LTS releases are meant to be as stable as possible using only tested packages, and can have support for up to 5 years.
+
+Configuring the Desktop experience:
+
+Debian tends to use APT, RedHat tends to use YUM / RPM, SUSE uses ZYpp, and Arch uses Pacman. 
+
+

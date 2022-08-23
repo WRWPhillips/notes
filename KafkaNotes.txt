@@ -1,0 +1,250 @@
+Number one: Review basics of Kafka
+
+Kafka Basics:
+	Brokers, Zookeeper, Producers, Consumers
+
+Apache Kafka is a distributed streaming platform ->
+	Centralized system for publishing and subscribing to data,
+	the distributed store allows data to be stored in order. The 
+	acceptance of reprocessing at the core makes it really 
+	reliable. Many writers and readers can be used at once, they 
+	can be added until the server is saturated and then another server
+	can be immediately added.
+	Kafka provides a high level of abstraction separating you from having
+	to care about the underlying platform and focus on business logic.
+	even abstracts the problem of time.
+	Kafka is focused on treating data as a stream of ongoing data, has
+	grown into a full blown streaming platform. Big for microservices.
+	Producers don't have to concern themselves with anything other
+	than producing. This allows for the prioritization of CQRS 
+	(Command Query Responsibility Segregation) principle of 
+	microservice architecture. Backwards and forward compatibility, 
+	kafka is asynchronous and requires a kind of paradigm shift.
+	Kafka is uniquely useful for the modern environment in which soft
+	ware has eaten everything, because it skirts around traditional
+	data storage paradigms by leaning into truly event driven
+	data management. SQL and noSQL dbs are passive means of storage,
+	where Kafka is active and reactive, tailored to event driven
+	applications while still maintaining the redundancy necessary.
+	
+What is Kafka used for?
+	This course focuses on weather analysis. Classic use case for kafka
+	is log aggregation. Kafka can be plugged into ML, and is a nice 	     reliable data lake for distributed systems. Kafka can be used to
+	store events for event based systems. It's now usable for streaming.
+	This will be written in scala, and that will be good for me. I need
+	to learn a little bit of it anyway.
+
+Kafka's architecture
+	First is the broker, the heart of Kafka, where the data resides. It 
+	can be one server but the point of kafka is to be able to scale into 	     clusters.
+
+	Data is sent to the cluster through producers. The data is at its
+	core kind of agnostic to formats, it's just byte arrays that can even	     either have keys or not. Just because it's typeless at its root 
+	doesnt mean it has to be that way, you can add schema to config
+	so that data is typecast to avoid structural problems in codebase.
+	Schema can be in a ton of different formats. JSON, XML, AVRO -->
+		This course is using AVRO because it's the most common.
+		It was designed for use in HADOOP and has decent compre
+		ssion. Compressed JSON formatted binary, has APIs for about
+		every major language. Support for backwards and forwards 
+		compatibility, and you should stick to what you choose.
+
+	Each message is assigned to a specific name within the system, 
+	known as a topic. You can think of these as something akin to table
+	names in SQL db systems. The topic is split into a configurable
+	number of partitions. Each partition is a separate and single log,
+	kafka can scale up to a maximum equal to the partition count. This is	     because messages have to be consumed in the same order they were 
+	received. The ordering guarantee is an ordering guarantee for each 
+	topics partition. It's the ordering within a guarantee. 
+
+	The data is stored in a kind of commit log, such that new messages
+	are appended into the log and given an offset. Consumers can provide
+	their last known offset and consume. 
+
+	Fault tolerance: If partitions are the parallelism factor, then the
+	equivalent for redundancy is the replication factor. You can specify
+	the number of fault tolerant redundancies. 
+
+	The data in the cluster is of course read by a consumer, these are
+	also scaled out via a group of applications and each is assigned a to        pic based on its partitions. 
+
+	The final component: Zookeeper -> Centralized service for maintaining	     configuration information, naming, providing distributed synchroniz-
+	ation, and providing group services.
+	Apache Zookeeper makes sure if a leader in a cluster goes down
+	another is elected and the system keeps chugging along. ZooKeeper
+	itself is a group, referred to as an ensemble, such that it will not
+	go down if one of its members fails. 
+
+	
+Kafka's Heart: The Broker 
+	The hub, or heart, for all the data. It's built to work with a single        server handling thousands or millions of messages a second.
+	Replicas are technically consumers! Interesting. 
+
+ZooKeeper: 
+	In a cluster the different servers need to coordinate amongst one
+	another so that the outside world sees the server as a single unit.
+	This is done by one server being elected controller: Zookeeper does
+	this. ZooKeeper is run as an ensemble, and should be on odd number
+	because it needs a quorum (majority) to work. Multiple clusters
+	can work on same ensemble. Every time a broker starts up it registers	     itself in zookeeper by creating an ephemeral node using broker.id
+	The node is important, determined to be dead if the connection is
+	down for too long. The controller is the first broker to create 
+	an ephemeral node called /controller. All other brokers will try 
+	this and get a node already exists kicked back, which results in
+	them creating a watch on the node waiting to join if current
+	controller gets kicked. 
+
+Data Fault Tolerance:
+	Replication means there are duplicated sets of data on multiple
+	servers. There is a leader and the other duplicated sets are 
+	consuming from that leader in order to duplicate the data. The 
+	leader stays updated on its followers, and if a follower doesn't
+	make a request for too long it's declared out of sync, but if it's
+	in sync it's defined as an in-sync replica. If the leader fails only
+	an in sync replica can take its place. The controller makes sure the 	     leader is replaced.
+
+Data Management:
+	A single partition will never be multi located. A partition is
+	essentially a folder containing that partitions data
+	as log segments.
+	All data of that partition will go to that single log, but can 
+	and should be replicated. In order to distribute evenly for a 
+	distributed system, different partitions are spread around in a 
+	round robin system. Server location is now taken into consideration,
+	so you can assign each broker to have a broker.rack value that will
+	stagger distribution between racks for better distribution for 
+	replication purposes. 
+
+Data Retention:
+	Retention policy can be size or time based or both, based on config
+	set at broker level. 
+
+Kafka's Flow: Producers and Consumers
+
+Producers:
+	Producer messages will wait to send, being batched by topic and
+	partition, because the network is the slowest resource. In fact,
+	they are even compressible. Round robin algorithm is used. 
+	Producers can be scaled up in order to increase throughput and
+	prevent choke points, but it's best practice to increase threads
+	first and then start spinning up more producers. 
+
+Consumers:
+	Consumers are a little more complicated than producers.
+	Consumers are what read topic data out of the broker. In fact they 
+	can track multiple kafka topics. They must also constantly push off
+	sets of what they've already processed back to the kafka topic, 
+	so they're also producers in a sense. In order to scale consumption
+	which is slower more than one is often needed, which leads to the 
+	creation of consumer groups, which work as a coordinated system.
+	They link by using a shared consumer group.id and coordinate which
+	consumer get which partitions of the data. A single partition cannot
+	be split, as a reminder. The maximum consumers in a group should not
+	exceed the number of available partitions. They would be idle 
+	wasted resources. Group coordination works through a kafka broker
+	working as a group coordinator, in the same way leaders befor were 
+	discussed. The coordinator can redo organization of consumers as 
+	needed. Consumer availability is coordinated by the broker with 
+	period pings sent by consumers known as heartbeats. If the
+	coordinator notices too many consecutive missed heartbeats, 
+	it makes that consumer as unavailable so work can be rebalanced
+	accordingly. 
+
+More Theory about Kafka Streams: 
+	Technologies that solve for the data volume problem in the era 
+	of big data tend to be batch-oriented, running jobs on piles of data
+	that have accumulated. This comes at the expense of latency. Kafka's
+	orientation is around streams of data, and betrays the idea that
+	the data never ends and comes continuously. Kafka Streams and 
+	ksqlDB aim to solve this problem by modelling data in different ways,
+	applying stateless transformations of data, using local state for
+	more advanced operations, understanding different time semantics
+	and methods for grouping data into buckets/windows, and more.
+	Knowledge of streams and ksqlDB will help you distinguish and 
+	evaluate different stream processing solutions that currently exist
+	and may come into existence sometime in the future. There are more
+	bytes of data in storage on earth right now than stars in the 
+	known universe, and it would be impractical to store it in relational
+	db warehouses.
+
+Kafka's data structure:
+	The ultimate storage abstraction at the root of Kafka is a commit
+	log. This is an append-only data structure that captures an ordered
+	sequence of events.
+
+Log Example (bash for loop generated):
+
+timestamp=123421324234,user_id=1,purchases=1
+timestamp=123421324234,user_id=2,purchases=1
+timestamp=123421324234,user_id=3,purchases=1
+timestamp=123421324234,user_id=4,purchases=1
+timestamp=123421324234,user_id=5,purchases=1
+timestamp=123421324234,user_id=6,purchases=1
+timestamp=123421324234,user_id=7,purchases=1
+timestamp=123421324234,user_id=8,purchases=1
+timestamp=123421324234,user_id=9,purchases=1
+timestamp=123421324234,user_id=10,purchases=1
+timestamp=123421324234,user_id=11,purchases=1
+timestamp=123421324234,user_id=12,purchases=1
+timestamp=123421324234,user_id=13,purchases=1
+timestamp=123421324234,user_id=14,purchases=1
+timestamp=123421324234,user_id=15,purchases=1
+timestamp=123421324234,user_id=16,purchases=1
+timestamp=123421324234,user_id=17,purchases=1
+timestamp=123421324234,user_id=18,purchases=1
+timestamp=123421324234,user_id=19,purchases=1
+timestamp=123421324234,user_id=20,purchases=1
+timestamp=123421324234,user_id=21,purchases=1
+timestamp=123421324234,user_id=22,purchases=1
+timestamp=123421324234,user_id=23,purchases=1
+timestamp=123421324234,user_id=24,purchases=1
+timestamp=123421324234,user_id=25,purchases=1
+
+	In order to update the values for any user, we simply need to append 
+	the value to the end of the log. In order to examine the purchase 
+	counts for a user a system will need to read through and find the 
+	last entry for a given user. The fact that the log is ordered 
+	adds reason to the data, and means it can be processed deterministic-
+	ally by multiple processes. Instead of using line numbers, the kafka
+	log uses offsets, which start at 0 and enable multiple consumer
+	groups to read from the same log, and maintain their own positions
+	in the log/stream they're reading from. 
+
+Topics expanded:
+	Kafka has named streams called topics as we know, and they're
+	extremely flexible with the option to either be homogeneous 
+	(only one type of data) or heterogeneous (containing multiple types).
+	Kafka topics are broken into partitions, which are individual logs 
+	where the data is produces and consumed from. Since the commit log
+	abstraction is at the partition level, this is the level at which
+	ordering is guaranteed, with each partition having its own set of 
+	offsets. Global ordering is not supported at topic level, which is 
+	why producers often route related records to the same partition. 
+	Ideally data will be distributed evenly across all partitions but
+	this is not always the case by any means. Partition numbers are 
+	configurable, and having more partitions in a topic generally
+	translates to more parallelism, but trade-offs to more partitions
+	include longer recovery periods after certain failures and increased
+	resource utilization, and increased end-to-end latency. Consumer 
+	groups can only consume from one partition at a time per consumer 
+	group, as well. 
+
+	A lot of different terms are used to describe the points of data in
+	a topic but a fitting term is an event. The anatomy of an event 
+	includes headers, a key, a timestamp, and a value. Keys and headers
+	are optional but good to know about. An event is a timestamped record
+	that something happened.
+
+Kafka Clusters and Brokers:
+
+	Having a centralized communication point means reliablility and 
+	fault tolerance are extremely important. it also means the communic-
+	ation backbone needs to be scalable. this is why kafka operates as a
+	cluster, and multiple machines, called brokers, are involved in the 
+	storage and retrieval of data. Kafka clusters can be quite large, 
+	even spanning multiple data centers and even geographical regions.
+	When talking about data being stored and replicated across brokers we
+	are really talking about individual partitions in a topic. 
+	For example, a topic may have three partitions that are spread across
+	three brokers. Topics are often huge, growing beyond the capacity of 
+	a single machine.  
