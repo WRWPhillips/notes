@@ -28,6 +28,7 @@ Apache Kafka is a distributed streaming platform ->
 	applications while still maintaining the redundancy necessary.
 	
 What is Kafka used for?
+
 	This course focuses on weather analysis. Classic use case for kafka
 	is log aggregation. Kafka can be plugged into ML, and is a nice 	     reliable data lake for distributed systems. Kafka can be used to
 	store events for event based systems. It's now usable for streaming.
@@ -35,6 +36,7 @@ What is Kafka used for?
 	to learn a little bit of it anyway.
 
 Kafka's architecture
+
 	First is the broker, the heart of Kafka, where the data resides. It 
 	can be one server but the point of kafka is to be able to scale into 	     clusters.
 
@@ -43,6 +45,7 @@ Kafka's architecture
 	doesnt mean it has to be that way, you can add schema to config
 	so that data is typecast to avoid structural problems in codebase.
 	Schema can be in a ton of different formats. JSON, XML, AVRO -->
+
 		This course is using AVRO because it's the most common.
 		It was designed for use in HADOOP and has decent compre
 		ssion. Compressed JSON formatted binary, has APIs for about
@@ -77,10 +80,12 @@ Kafka's architecture
 
 	
 Kafka's Heart: The Broker 
+
 	The hub, or heart, for all the data. It's built to work with a single        server handling thousands or millions of messages a second.
 	Replicas are technically consumers! Interesting. 
 
 ZooKeeper: 
+
 	In a cluster the different servers need to coordinate amongst one
 	another so that the outside world sees the server as a single unit.
 	This is done by one server being elected controller: Zookeeper does
