@@ -129,3 +129,45 @@ Processor Topologies:
 	which is often referred to as /the topology/. This topology provided
 	as a Directed Acyclic Graph (DAG) is a neat way to visualize the
 	activity of an application. 
+
+
+	This may be a terrible comparison, but Streams sort of feels like a 
+	middleware for Kafka. Take an example application of a chat bot using
+	Kafka topics. The chat bot is invoked using @KafkaStreamBot followed
+	by a command. Any message invoked using @KafkaStreamBot will go to
+	the slack-mentions topic, but the command following it could be
+	either valid or invalid. In this case, we could use a simple Stream
+	processor called isValid that determines whether a mention is
+	followed by a valid command, and then either write to the valid-menti
+	ons topic or the invalid-mentions topic depending on whether it
+	turned out to have been valid. 
+
+	Sub-topologies: Sub-topologies are basically further alternative
+	paths within a processor topology. Taking the example used above for
+	example, you'd then be able to route into further processor topologie
+	s from the initial one. These can be executed independently, allowing
+	for further parallelism. Each of the dotted squares in the diagram 
+	below are independently operable sub-topologies. 
+
+
+             _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+	    		 ________________
+	    | 		|Slack Mentions  |		|
+				|
+	    |			| <-Stream		|
+			 _______|________
+	    |		|    isValid     |		|
+			    /        \			
+	    |	Stream->   /          \ <-Stream	|
+			  /            \		
+	    | _ _ _ _ _ True_  _ _ _ _False_ _ _ _ _ _ _|
+	       ______________      ________________ 
+	    | |valid-mentions|  | |invalid-mentions|    |
+		       |		|
+	    |	       |	|	| <-Stream	|
+		 ______|_______    _____|___________
+	    |	| handleCommand|| |postErrorResponse|   |
+
+	    |_ _ _ _ _ _ _ _ _ _|_ _ _ _ _ _ _ _ _ _ _ _|
+
+
