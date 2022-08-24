@@ -171,3 +171,93 @@ Processor Topologies:
 	    |_ _ _ _ _ _ _ _ _ _|_ _ _ _ _ _ _ _ _ _ _ _|
 
 
+	In the case of exchange between sub-topologies, there is no direct
+	data movement. isValid posts to a kafka topic that valid-mentions
+	consumes from. 
+
+Depth-first processing: 
+	
+	Kafka Streams uses a depth-first strategy when processing data. When 
+	a new record is received, it is routed through each stream processor 
+	in the topology before a new record is processed. This means only one
+	record at a time is actually moving through the topography. This
+	means that slow stream processing operations can block other records 
+	from being processed in the same thread. 
+
+Advantages of dataflow programming:
+
+	Representing the program as a directed graph makes it easy to reason
+	about. It means there's not a lot of confusing conditionals and 
+	control logic, and you only really need to track the nodes and edges
+	to know exactly how data is flowing. 
+
+	It also allows us to standardize the way real-time data is framed,
+	meaning any kafka streams project will be instantly recognizable and
+	familiar to anyone who has worked on any other streams project. 
+	Not just because of the reusable abstractions in the library,
+	but because of the common approach to problem solving.
+	Its nodes (operators) and edges (streams) all the way down. 
+
+	Another benefit is the understandability of the DAG to non-technical
+	people, which is great for organizations.
+
+	A final benefit is that the processor topology, which contains the 
+	source, sink, and stream processors, acts as a template that can be
+	instantiated and parallelized very easily across multiple threads
+	and application instances. Being easily replicatable helps with 
+	scalability immensely.
+
+Tasks, Stream Threads, Partitions:
+
+	When we define a topology in Kafka Streams we are not actually
+	executing the program. Instead we are building a template for how 
+	data should flow through our application. This template can be
+	instantiated multiple times in a single application instance, and 
+	parallelized across many tasks and stream threads.
+	There's a close relationship between the number of tasks/threads and 
+	the amount of work your stream processing application can handle, so 
+	understanding the content in this section is especially important for
+	achieving good performance with Kafka Streams. 
+
+	"A task is the smallest unit of work that can be performed in
+	parallel in a Kafka Streams apllication... Slightly simplified, the 
+	maximum parallelism at which your application may run is bounded by 
+	the maximum number of stream tasks, which is bounded by the maximum
+	number of partitions of the input topic(s) the application is reading
+	from." --Andy Bryant 	
+
+	Basically, the number of tasks you can have is the same number as the
+	number of partitions of the topic which has the most partitions that 
+	your topology reads from. 
+
+	Tasks are just logical units that are used to instantiate and run 
+	processory topologies, but threads are what actually executes it. 
+	In Streams, stream threads are designed to be isolated and thread-
+	safe. Unlike tasks, there isn't any formula Kafka Streams applies to 
+	calculate the number of threads your app should run. Instead, you
+	specify the thread count using a configuration property named
+	num.stream.threads-- The upper bound for the number of threads you
+	can utilize corresponds to the task count, and there are different
+	strategies for deciding on the number of stream threads you should
+	run with. 
+
+High-Level DSL Versus Low-Level Processor API. 
+
+	A common idea in the software engineering field is that abstraction 
+	comes at a cost: the more you abstract details away, the more the 
+	software feels like magic, and the more control you give up. 
+
+	Kafka Streams allows developers to choose the abstraction level that
+	works best for them by providing two different APIs, the high level 
+	DSL and the low level Processor API.
+
+	The high-level DSL is built on top of the processor API but the
+	interface is slightly different. It ends up using a more functional
+	style of programming, and allows you to leverage higher-level 
+	abstractions for dealing with the data (streams and tables). 
+
+	The lower-level Processor API lets you schedule periodic functions,
+	gives more granular access to application state, and more fine
+	grained control over the timing of certain operations. 
+
+
