@@ -80,4 +80,52 @@ Enter Streams:
 
 		- Scalability, reliability, and maintainability.
 
+Processor Topologies:
+
+	Kafka Streams leverages a programming paradigm called dataflow
+	programming, which is a data-centric method of representing programs
+	as a series of inputs, outputs, and processing stages. This leads to 
+	a very natural and intuitive way of creating stream processing 
+	programs. Instead of building a program as a sequence of steps, the
+	stream processing logic in Kafka Streams is structured as a 
+	directed acyclic graph. The nodes represent a processing step,
+	and the edges represent i/o streams.
+
+			 ________________
+			|Source Processor|		
+				|
+				| <-Stream
+			 _______|________
+			|Stream Processor|
+			    /        \
+		Stream->   /          \ <-Stream
+			  /            \
+		 ______________   ________________ 
+		|Sink Processor| |Stream Processor|
+					|
+					| <-Stream	
+				  ______|_______
+				 |Sink Processor|
+
+	There are three basic kinds of processors in Kafka Streams:
 		
+		-Source Processors, sources where information flows into the
+		Kafka streams application. Data is read from a Kafka topic
+		and sent to one or more stream processors.
+
+		-Stream processors, responsible for applying data processing/
+		transformation logic on the input stream. In the high-level
+		DSL these are defined using a set of built in operators that 
+		are exposed by the Streams library. Filter, map, flatMap,
+		join, etc.
+
+		-Sink processors are where enriched, transformed, filtered, 
+		or otherwise processed records are written back to kafka
+		either to be handled by another stream processing application
+		or to be sent to a downstream data store via somethin like 
+		Kafka Connect. 
+
+	The collection of these processors forms the processor topology, 
+	which is often referred to as /the topology/. This topology provided
+	as a Directed Acyclic Graph (DAG) is a neat way to visualize the
+	activity of an application. 
