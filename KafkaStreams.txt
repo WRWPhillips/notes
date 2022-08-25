@@ -25,6 +25,7 @@ The Kafka Ecosystem:
 		(JDBC source connector, ElasticSearch sink connector, custom)
 
 Enter Streams:
+
 	While moving data through kafka is certainly important for creating 
 	data pipelines, some business problems require us to also process
 	and react to data as it becomes available in kafka. This is referred
@@ -56,6 +57,7 @@ Enter Streams:
 	optionally writing enriched or transformed records back to Kafka.
 
 	Streams provides: 
+
 		- A high-level DSL (domain specific language) that looks and
 		feels like Java's streaming API. The DSL provides a fluent
 		and functional approach to processing data streams that is
