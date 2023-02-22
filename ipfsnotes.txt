@@ -1,0 +1,19 @@
+The idea is to create a traditional golang todo cli app,
+not bad at all on that front, and then interface with 
+ipfs so that a CID of the mutated todo list is created
+and put on a free redis store. This requires a connection
+to a redis instance to start, and that's it. An edge case
+worth covering is two simultaneous writes. I would
+recommend checking whether the CID in the redis store
+has changed before updating, and if possible 
+configuring the redis store to debuff updates so that 
+in the case of two updates milliseconds apart an error 
+message is sent and a reset can happen.
+
+--> Step 1: traditional todo cli in golang
+
+--> Step 2: configure redis store etc. 
+
+--> Step 3: test, debug, solve edge cases
+
+--> done

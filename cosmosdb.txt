@@ -1,0 +1,9 @@
+What is Azure Cosmos DB?
+--      Azure Cosmos DB is a Microsoft nosql database with global distribution and horizontal
+	scaling, low latency and high throughput that natively supports multiple data models:
+	key-value, documents, graphs, and columnar. CosmosDB supports multiple APIs for
+	accessing data including DocumentDB, MongoDB, Apache Cassandra, Graph, and Table.
+
+--      Multiple Data models and APIs 
+	You can pick between different data models for whichever use case suits you. 
+	 	

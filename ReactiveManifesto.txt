@@ -1,0 +1,74 @@
+A change is happening where disparate companies are happening upon
+similar patterns for building software that's more robust, resilient, 
+flexible, and better suited to meet modern demands. These are happening
+because in recent years app requirements have changed dramatically, with
+users expecting super low response times, multitudes of different 
+frontends using the same backend, cloud hosting, and way more data than ever
+before. Old paradigms are not effective in this day and age. 
+
+The Reactive manifesto is trying to create a coherent approach to systems
+architecture that meets these demands. Reactive systems are more Responsive,
+Resilient, Elastic, and Message Driven. More flexible, loosely-coupled, and
+scalable. This makes them easier to develop and amenable to change. 
+They're more failure tolerant and handle failure well, and are highly responsive
+giving users effective interactive feedback.
+
+Reactive systems are:
+  -Responsive-
+    The system responds in a timely manner. This is a cornerstone because of 
+    usability and utility, and the ability to detect problems quickly and handle
+    them. Rapid and consistent response times are essential.
+
+  -Resilient-
+    The system maintains resposiveness when it fails. This is achieved by
+    replication, containment, isolation, and delegation. Failures are contained
+    within each component, and separation means that parts of the system can 
+    fail and recover without compromising the system as a whole. Recovery of
+    each component is delegated to another external component and high
+    high availability is ensured. Clients aren't burdened with handling 
+    failures.
+
+  -Elastic-
+    The system stays responsive under varying workload. Reactive Systems react
+    to changes in input by increasing or decreasing resources, and should have
+    no bottlenecks or contention points so that components can be replicated
+    and inputs can be shared between them. Predictive and reactive scaling
+    algorithms are implemented with live performance measures. Elasticity
+    is achieved in a cost-effective way. 
+
+  -Message Driven-
+    Reactive Systems rely on asynchronous message-passing to establish a
+    boundary between components that ensures loose coupling, isolation and 
+    location transparency (essentially mobile components that are agnostic
+    to their position in a program topology, they can be anywhere). This also
+    means the ability to delegate failures as messages. Message passing enables
+    load management, elasticity, and flow control by shaping and monitoring
+    the message queues in the system and applying back-pressure when necessary.
+    (back pressure, borrowed from fluid dynamics, whenever too much fluid is 
+    trying to flow through something but can't go fast enough, pressure builds 
+    up. in reactive systems we need components to be able to communicate that
+    back pressure has gotten too bad and for other components to reduce the load
+    as well.) Location transparent messaging means failure can work with the
+    same constructs and semantics across a cluster or within a single host. 
+
+Reactive Principles--
+
+  Building a cloud or edge native or IoT application means building and running
+  a distributed system on unreliable hardware and across unreliable networks.
+  An application is Reactive if it uses the principles below. 
+
+  -Stay Responsive-
+    Responsiveness matters. A lot. It's easy to be responsive when things are
+    good, but a lot harder to stay responsive in the face of random failures,
+    communication outages, and unpredictable workloads. To the user, none of 
+    these circumstances matter. It's not just low latency and fast response
+    times, it's about managing changes and reacting to them so as to
+    provide the maximum context for users, human or program. Reactive,
+    responsive applications detect and deal with problems, providing rapid and 
+    consident response times, and responding with error messages when there 
+    are problems to provide a degraded but still useful level of service. 
+    This consistency simplifies error handling, builds confidence, and 
+    encourages more interaction. Responsiveness is affected by contention,
+    coordination, coupling, data flow, communication patterns, resource 
+    management, failure handling, and uncertainty. It's a concept that ties into
+    and motivates all of the other principles. 
